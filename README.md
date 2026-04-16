@@ -89,7 +89,7 @@ $$
 \mathbf{v}^{\text{total}} = \mathbf{v}^{\text{real}} + \mathbf{v}^{\text{esp}}
 $$
  
-donde $v^{\text{real}}_i = \sum_{j=1}^{r} V_{ij}$ son los votos ya contabilizados. Se rankean los candidatos según $\mathbf{v}^{\text{total}}$.
+donde $\mathbf{v^{\text{real}}_i = \sum_{j=1}^{r} V_{ij}$ son los votos ya contabilizados. Se rankean los candidatos según $\mathbf{v}^{\text{total}}$.
  
 ---
  
