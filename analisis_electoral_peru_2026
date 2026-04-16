@@ -748,7 +748,7 @@
     "    f\"3. {top3_name} ({fmt_int(real_v3)})\\n\\n\"\n",
     "    f\"Dif. real 1-2 ({short_name(top1_name)} vs {short_name(top2_name)}): {fmt_int(diff_real_1_2)}\\n\"\n",
     "    f\"Dif. real 2-3 ({short_name(top2_name)} vs {short_name(top3_name)}): {fmt_int(diff_real_2_3)}\\n\"\n",
-    "    f\"Dif. esperada 2 (ALIAGA CAZORLA)-3 (SANCHEZ PALOMINO): {fmt_int(diff_esp_2_3)}\\n\\n\"\n",
+    "    f\"Dif. esperada 2 ({short_name(top2_name)})-3 ({short_name(top3_name)}): {fmt_int(diff_esp_2_3)}\\n\\n\"\n",
     "    f\"--- Pasa a 2da vuelta ---\\n\"\n",
     "    f\"{short_name(top1_name)}: {p_top2_1:.1%}\\n\"\n",
     "    f\"{short_name(top2_name)}: {p_top2_2:.1%}\\n\"\n",
