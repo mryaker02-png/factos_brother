@@ -89,7 +89,8 @@ $$
 \mathbf{v}^{\text{total}} = \mathbf{v}^{\text{real}} + \mathbf{v}^{\text{esp}}
 $$
  
-donde $\mathbf{v^{\text{real}}_i = \sum_{j=1}^{r} V_{ij}$ son los votos ya contabilizados. Se rankean los candidatos según $\mathbf{v}^{\text{total}}$.
+donde $v^{\text{real}}\_i = \sum\_{j=1}^{r} V\_{ij}$ son los votos ya contabilizados. Se rankean los candidatos según $\mathbf{v}^{\text{total}}$.
+
  
 ---
  
@@ -99,7 +100,7 @@ La proyección determinista asume que la popularidad observada es exactamente la
  
 ### Distribución Dirichlet
  
-Por cada simulación y cada región, se perturba el vector de popularidad observado $\mathbf{p}_j = (P_{1j}, \ldots, P_{cj})$ usando una **distribución de Dirichlet**:
+Por cada simulación y cada región, se perturba el vector de popularidad observado $\mathbf{p}\_j = (P\_{1j}, \ldots, P\_{cj})$ usando una **distribución de Dirichlet**:
  
 $$
 \tilde{\mathbf{p}}_j \sim \text{Dirichlet}(\alpha_j), \quad \alpha_j = \kappa \cdot \mathbf{p}_j
@@ -115,8 +116,11 @@ El parámetro $\kappa$ controla **qué tan concentrada está la distribución al
  
 - $\kappa \to \infty$: las muestras son prácticamente idénticas a $\mathbf{p}_j$ (cero ruido, equivalente al modelo determinista).
 - $\kappa \to 0$: las muestras son casi aleatorias (ruido extremo, cualquier candidato podría ganar cualquier región).
-- $\kappa = 500$: las muestras varían moderadamente alrededor de $\mathbf{p}_j$, simulando que la popularidad observada es una estimación razonable pero no exacta.
-Intuitivamente, $\kappa = 500$ equivale a decir *"confío en la popularidad observada con una fuerza equivalente a haber observado 500 votos por región"*, lo cual produce una banda de incertidumbre consistente con el tamaño muestral de una elección.
+- $\kappa = 500$: las muestras varían moderadamente alrededor de $\mathbf{p}\_j$, simulando que la popularidad observada es una estimación razonable pero no exacta.
+
+Con ~18 millones de votos ya contabilizados a nivel nacional, el tamaño muestral real implicaría un $\kappa$ de millones — es decir, la Dirichlet colapsaría prácticamente al vector observado y la simulación sería indistinguible del modelo determinista. Usar $\kappa = 500$ es una elección deliberadamente **conservadora**: inyecta más incertidumbre de la que sugiere el puro tamaño muestral, para capturar fuentes de error que la muestra estadística no modela (sesgos en el orden de conteo, diferencias sistemáticas entre actas procesadas temprano vs tarde, comportamiento de votantes indecisos en actas pendientes). Intuitivamente, $\kappa = 500$ equivale a decir *"confío en la popularidad observada con una fuerza equivalente a haber observado 500 votos por región"*, lo cual produce una banda de incertidumbre más realista que la que daría la varianza puramente muestral.
+
+Un lector riguroso podría argumentar que $\kappa$ debería escalar con el tamaño muestral (~18M votos), lo que daría $\kappa$ del orden de millones y bandas de error mínimas. Esto sería correcto bajo el supuesto de muestreo aleatorio simple, pero falla en elecciones reales: los votos contados no son una muestra aleatoria del total (las actas urbanas se procesan antes que las rurales, los votos dentro de una mesa están correlacionados, etc.). El $\kappa = 500$ usado aquí es una elección heurística que reconoce que el tamaño muestral *efectivo* es mucho menor que el nominal.
  
 ### Distribución Multinomial
  
@@ -133,9 +137,8 @@ Para cada simulación $n = 1, \ldots, N$:
 1. **Perturbar** la popularidad por región: $\tilde{\mathbf{p}}_j^{(n)} \sim \text{Dirichlet}(\kappa \cdot \mathbf{p}_j)$ para cada $j$.
 2. **Repartir** los restantes: $\mathbf{s}_j^{(n)} \sim \text{Multinomial}(r_j, \tilde{\mathbf{p}}_j^{(n)})$.
 3. **Sumar** votos reales y simulados:
-$$
-\mathbf{v}^{(n)} = \mathbf{v}^{\text{real}} + \sum_{j=1}^{r} \mathbf{s}_j^{(n)}
-$$
+
+$$\mathbf{v}^{(n)} = \mathbf{v}^{\text{real}} + \sum_{j=1}^{r} \mathbf{s}_j^{(n)}$$
  
 4. **Rankear** candidatos y registrar la posición de cada uno.
 Tras las $N$ simulaciones, se estiman probabilidades empíricas como:
